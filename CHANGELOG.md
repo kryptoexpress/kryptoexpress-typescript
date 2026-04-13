@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1
+
+- Added tag-based publish trigger for GitHub Actions alongside release-based publishing.
+- Prepared the first GitHub-driven npm release after the bootstrap publish.
+
 ## 0.1.0
 
 - Initial release of the TypeScript-first KryptoExpress SDK.

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2
+
+- Retried GitHub Actions npm publish after configuring the package trusted publisher.
+
 ## 0.1.1
 
 - Added tag-based publish trigger for GitHub Actions alongside release-based publishing.

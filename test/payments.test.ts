@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest';
 import { KryptoExpressClient } from '../src/client';
 import { StaticRateFiatConverter } from '../src/domain/conversion';
 import {
-  CurrencyConversionError,
   MinimumAmountError,
   UnsupportedPaymentModeError,
 } from '../src/domain/errors';
@@ -71,22 +70,37 @@ describe('payments resource', () => {
     ).rejects.toBeInstanceOf(MinimumAmountError);
   });
 
-  it('requires converter for non-USD minimum checks', async () => {
+  it('does not require converter for non-USD payments', async () => {
     const client = new KryptoExpressClient({
       apiKey: 'secret',
       fetch: createFetchMock(() => Promise.resolve(createJsonResponse(paymentResponse))),
     });
 
-    await expect(
-      client.payments.createPayment({
-        fiatCurrency: 'EUR',
-        fiatAmount: 1,
-        cryptoCurrency: 'BTC',
-      }),
-    ).rejects.toBeInstanceOf(CurrencyConversionError);
+    const payment = await client.payments.createPayment({
+      fiatCurrency: 'EUR',
+      fiatAmount: 1,
+      cryptoCurrency: 'BTC',
+    });
+
+    expect(payment.id).toBe(634);
   });
 
-  it('uses converter for non-USD minimum checks', async () => {
+  it('forwards non-USD payments without local minimum threshold validation', async () => {
+    const client = new KryptoExpressClient({
+      apiKey: 'secret',
+      fetch: createFetchMock(() => Promise.resolve(createJsonResponse(paymentResponse))),
+    });
+
+    const payment = await client.payments.createPayment({
+      fiatCurrency: 'EUR',
+      fiatAmount: 0.5,
+      cryptoCurrency: 'BTC',
+    });
+
+    expect(payment.id).toBe(634);
+  });
+
+  it('still allows optional converters for custom extensions', async () => {
     const client = new KryptoExpressClient({
       apiKey: 'secret',
       fiatConverter: new StaticRateFiatConverter([{ from: 'EUR', to: 'USD', rate: 1.1 }]),

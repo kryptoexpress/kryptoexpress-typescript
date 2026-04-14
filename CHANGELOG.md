@@ -1,13 +1,9 @@
 # Changelog
 
-## 0.1.2
-
-- Retried GitHub Actions npm publish after configuring the package trusted publisher.
-
 ## 0.1.1
 
-- Added tag-based publish trigger for GitHub Actions alongside release-based publishing.
-- Prepared the first GitHub-driven npm release after the bootstrap publish.
+- Limited client-side minimum amount validation to `USD` payments only.
+- Allowed non-USD `PAYMENT` creation without a local fiat converter or FX-based threshold validation.
 
 ## 0.1.0
 

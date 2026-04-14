@@ -45,7 +45,8 @@ Sources used:
 - `DEPOSIT` does not accept `fiatAmount`.
 - Stablecoins support only `PAYMENT`.
 - Stablecoin flows are treated as exact-payment-only by policy.
-- Minimum payment amount must be at least the fiat equivalent of `1 USD`.
+- Client-side minimum payment validation applies only to `USD` payments and enforces a minimum of `1.00`.
+- Non-USD payments are forwarded to the API without local minimum threshold validation.
 - Withdrawal dry-runs use `onlyCalculate: true`.
 - Callback verification uses `X-Signature` and `HMAC-SHA512` over compact JSON.
 
@@ -53,7 +54,7 @@ Sources used:
 
 - The practical docs are treated as the source of truth for payment semantics when they are stricter than OpenAPI.
 - Stablecoin exact-payment behavior is documented as a business rule, but there is no extra request field to toggle exactness. The SDK enforces the supported mode by allowing stablecoins only for `PAYMENT`.
-- The minimum amount policy depends on fiat conversion. The SDK uses an injectable `fiatConverter` abstraction instead of making undocumented exchange-rate assumptions.
+- The `fiatConverter` abstraction remains available as an optional extension, but ordinary non-USD payment creation no longer depends on it.
 - Runtime validation is limited to boundary parsing and critical policy checks to keep the package light and semver-friendly.
 
 ## Installation
@@ -98,6 +99,8 @@ const isValid = verifyCallbackSignature({
   signature: request.headers['x-signature'],
 });
 ```
+
+`fiatConverter` is optional. The SDK only enforces the `>= 1.00` minimum locally for `USD` payments; non-USD payment requests are forwarded to the API without local FX-based threshold validation.
 
 ## Public API
 

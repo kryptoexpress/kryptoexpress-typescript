@@ -57,22 +57,16 @@ export class MinimumAmountPolicy {
     this.minimumUsdAmount = options.minimumUsdAmount ?? 1;
   }
 
-  public async assertFiatAmountEligible(amount: number, fiatCurrency: FiatCurrency): Promise<void> {
+  public assertFiatAmountEligible(amount: number, fiatCurrency: FiatCurrency): Promise<void> {
     if (amount <= 0) {
       throw new MinimumAmountError('Payment amount must be greater than zero.', this.minimumUsdAmount);
     }
 
-    let amountInUsd = amount;
-
     if (fiatCurrency !== 'USD') {
-      if (!this.converter) {
-        throw new CurrencyConversionError(
-          `A fiat converter is required to validate minimum amount for ${fiatCurrency}.`,
-        );
-      }
-
-      amountInUsd = await this.converter.convert(amount, fiatCurrency, 'USD');
+      return Promise.resolve();
     }
+
+    const amountInUsd = amount;
 
     if (amountInUsd < this.minimumUsdAmount) {
       throw new MinimumAmountError(
@@ -81,6 +75,8 @@ export class MinimumAmountPolicy {
         { details: { amount, fiatCurrency, amountInUsd } },
       );
     }
+
+    return Promise.resolve();
   }
 }
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.4
+
+- Retried GitHub Actions publish after refreshing the npm trusted publisher binding for the recreated package.
+
 ## 0.1.3
 
 - Triggered a fresh GitHub Actions publish using a new release tag after the earlier `v0.1.2` tag had already been consumed.

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.3
+
+- Triggered a fresh GitHub Actions publish using a new release tag after the earlier `v0.1.2` tag had already been consumed.
+
 ## 0.1.2
 
 - Triggered the next GitHub Actions publish flow after the successful manual `0.1.1` npm release.

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2
+
+- Triggered the next GitHub Actions publish flow after the successful manual `0.1.1` npm release.
+
 ## 0.1.1
 
 - Limited client-side minimum amount validation to `USD` payments only.
